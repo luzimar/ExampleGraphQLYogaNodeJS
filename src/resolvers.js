@@ -1,25 +1,14 @@
-const users = [
-  {
-    id: "1",
-    name: "teste",
-    email: "teste@teste"
-  },
-  {
-    id: "2",
-    name: "teste2",
-    email: "teste@teste2"
-  }
-];
+import User from "./Models/User";
+
 export default {
   Query: {
-    users: () => users,
-    user: (_, { id }) => users.filter(user => user.id === id)[0]
+    users: async () => await User.find(),
+    user: async (_, { id }) => await User.findById(id)
   },
   Mutation: {
-    createUser: (_, user) => {
-      user.id = String(Math.random());
-      users.push(user);
-      return user;
+    createUser: async (_, user) => {
+      const userCreated = await User.create(user);
+      return userCreated;
     }
   }
 };
